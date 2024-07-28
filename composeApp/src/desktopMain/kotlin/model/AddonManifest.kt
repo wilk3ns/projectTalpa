@@ -1,6 +1,7 @@
 package model
 
 import com.google.gson.annotations.SerializedName
+import java.util.Date
 
 
 data class AddonManifest(
@@ -16,5 +17,7 @@ data class AddonManifest(
 	val minimumGameVersion: String,
 	@SerializedName("release_notes")
 	val releaseNotes: AddonReleaseNotes,
+	val fileModified: Date?,
+	val normalizedName: String?
 )
 
