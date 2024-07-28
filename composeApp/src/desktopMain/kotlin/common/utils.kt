@@ -1,7 +1,13 @@
 package common
 
+import com.google.gson.GsonBuilder
+import model.AddonManifest
+import model.SemVer
 import java.io.File
 import java.net.URL
+import java.nio.file.Files
+import java.nio.file.Path
+import java.util.Date
 
 fun isValidURL(url: String?): Boolean {
 	return try {
@@ -10,11 +16,6 @@ fun isValidURL(url: String?): Boolean {
 	} catch (e: Exception) {
 		false
 	}
-}
-
-fun getFolderModificationDate(folderPath: String): Long? {
-	val file = File(folderPath)
-	return if (file.exists()) file.lastModified() else null
 }
 
 fun getLocalAppDataPath(): String {
@@ -73,4 +74,67 @@ fun parseLines(iterator: Iterator<String>, resultMap: MutableMap<String, Any>, i
 			}
 		}
 	}
+}
+
+fun searchManifests(directory: Path, manifestFiles: MutableList<AddonManifest>) {
+	Files.walk(directory).use { stream ->
+		stream.filter { Files.isRegularFile(it) && it.fileName.toString() == "manifest.json" }
+			.forEach { file ->
+				val manifest = parseManifest(file)
+				if (manifest != null) {
+					manifestFiles.add(manifest)
+				}
+			}
+	}
+}
+
+fun parseManifest(file: Path): AddonManifest? {
+	return try {
+		val jsonContent = Files.readString(file)
+		val gson = GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
+		val manifest = gson.fromJson(jsonContent, AddonManifest::class.java)
+
+		// Get the last modified date and set it in the manifest
+		val lastModified = Date(Files.getLastModifiedTime(file).toMillis())
+		val normalizedName = generateNormalizedName(manifest.title, manifest.manufacturer, manifest.packageVersion)
+
+		// Create a new Manifest object with the fileModified date set
+		AddonManifest(
+			dependencies = manifest.dependencies,
+			minimumGameVersion = manifest.minimumGameVersion,
+			title = manifest.title,
+			packageVersion = manifest.packageVersion,
+			creator = manifest.creator,
+			manufacturer = manifest.manufacturer,
+			releaseNotes = manifest.releaseNotes,
+			contentType = manifest.contentType,
+			fileModified = lastModified,
+			normalizedName = normalizedName.lowercase()
+		)
+	} catch (e: Exception) {
+		e.printStackTrace()
+		null
+	}
+}
+
+fun String.toSemanticVersion(): SemVer {
+	val parts = this.split(".")
+	require(parts.size == 3) { "Invalid version format" }
+	val (major, minor, patch) = parts.map { it.toInt() }
+	return SemVer(major, minor, patch)
+}
+
+fun String.extractVersion(): SemVer {
+	val versionRegex = Regex("""v(\d+)\.(\d+)\.(\d+)$""")
+	val matchResult = versionRegex.find(this)
+	require(matchResult != null) { "Version not found in the text" }
+
+	val (major, minor, patch) = matchResult.destructured
+	return SemVer(major.toInt(), minor.toInt(), patch.toInt())
+}
+
+fun generateNormalizedName(title: String, manufacturer: String, packageVersion: String): String {
+	val regex = Regex("\\b${Regex.escape(manufacturer)}\\b")
+	val restOfTitle = regex.split(title, limit = 2).getOrElse(1) { "" }.trim()
+	return "$manufacturer - $restOfTitle v$packageVersion"
 }

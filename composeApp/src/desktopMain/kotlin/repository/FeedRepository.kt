@@ -4,8 +4,6 @@ import com.prof18.rssparser.RssParser
 import model.Feed
 import model.FeedItem
 import java.text.SimpleDateFormat
-import java.time.Instant
-import java.util.Date
 import java.util.Locale
 
 class FeedRepository(
@@ -18,7 +16,7 @@ class FeedRepository(
 		return Feed(
 			title = channel.title ?: "",
 			items = channel.items.mapNotNull {
-				val title = it.title
+				val title = it.title?.replace("\u2013", "-")
 				val subtitle = it.description
 				val pubDate = it.pubDate
 
