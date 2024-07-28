@@ -23,7 +23,7 @@ To install Project Talpa, follow these steps:
     desktopRun -DmainClass=MainKt --quiet
     ```
 
-3. **Run the Application**:
+3. **Run the Application**
 
 ## Usage
 
