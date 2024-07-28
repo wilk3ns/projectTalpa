@@ -9,12 +9,8 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.window.ApplicationScope
-import androidx.compose.ui.window.Window
 import common.components.ErrorView
 import common.components.FeedList
 import common.components.LoadingProgress
@@ -22,26 +18,15 @@ import kotlinx.coroutines.launch
 import presentation.MainViewModel
 
 @Composable
-fun ApplicationScope.MainScreen(onShowCheckerClick: () -> Unit) {
-	Window(
-		onCloseRequest = ::exitApplication,
-		title = "Talpa",
-	) {
+fun NewAddonsScreen(viewModel: MainViewModel) {
 		MaterialTheme {
-			val viewModel = remember { MainViewModel() }
-
-			LaunchedEffect(Unit) {
-				viewModel.getFeeds()
-			}
-
 			val uiState by viewModel.uiState
-			val title = uiState.feed?.title ?: ""
+			val title = uiState.newFeed?.title ?: ""
 			val scope = rememberCoroutineScope()
-
 			Scaffold(
 				topBar = {
 					TopAppBar(
-						backgroundColor = MaterialTheme.colors.background,
+						backgroundColor = MaterialTheme.colors.secondary,
 						title = {
 							Text(
 								"Hi!",
@@ -52,7 +37,7 @@ fun ApplicationScope.MainScreen(onShowCheckerClick: () -> Unit) {
 						actions = {
 							IconButton(
 								onClick = {
-									onShowCheckerClick()
+									//onShowCheckerClick()
 								}
 							) {
 								Icon(
@@ -81,8 +66,8 @@ fun ApplicationScope.MainScreen(onShowCheckerClick: () -> Unit) {
 						)
 					}
 
-					uiState.feed != null -> {
-						val items = uiState.feed?.items ?: emptyList()
+					uiState.newFeed != null -> {
+						val items = uiState.newFeed?.items ?: emptyList()
 						FeedList(
 							padding = paddingValues,
 							feedItems = items,
@@ -92,4 +77,3 @@ fun ApplicationScope.MainScreen(onShowCheckerClick: () -> Unit) {
 			}
 		}
 	}
-}

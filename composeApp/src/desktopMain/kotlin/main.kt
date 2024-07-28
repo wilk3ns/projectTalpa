@@ -4,13 +4,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.window.application
 import presentation.components.CheckerScreen
-import presentation.components.MainScreen
+import presentation.components.TabScreen
 
 fun main() = application {
 	var isMainScreenShow by remember { mutableStateOf(true) }
 
 	if (isMainScreenShow) {
-		MainScreen(
+		TabScreen(
 			onShowCheckerClick = {
 				isMainScreenShow = false
 			}
