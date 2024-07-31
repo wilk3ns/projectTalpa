@@ -2,23 +2,20 @@ package common.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
-import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.loadImageBitmap
-import androidx.compose.ui.res.loadSvgPainter
-import androidx.compose.ui.res.loadXmlImageVector
-import androidx.compose.ui.unit.Density
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.xml.sax.InputSource
 import java.io.IOException
 import java.net.URL
 
@@ -47,7 +44,11 @@ fun <T> AsyncImage(
 				modifier = modifier,
 				contentAlignment = Alignment.Center
 			) {
-				CircularProgressIndicator()
+				CircularProgressIndicator(
+					color = ProgressIndicatorDefaults.circularColor,
+					trackColor = ProgressIndicatorDefaults.circularTrackColor,
+					strokeCap = StrokeCap.Round
+				)
 			}
 
 		}

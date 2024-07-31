@@ -150,6 +150,7 @@ fun ExpandedScreen(
 	PermanentNavigationDrawer(
 		drawerContent = {
 			PermanentDrawerSheet {
+				Spacer(Modifier.height(48.dp))
 				items.forEachIndexed { index, item ->
 					NavigationDrawerItem(
 						icon = { Icon(icons[index], contentDescription = item) },

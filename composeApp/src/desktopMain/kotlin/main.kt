@@ -5,16 +5,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.window.application
 import presentation.components.CheckerScreen
 import presentation.components.TabScreen
+import ui.theme.TalpaTheme
 
 fun main() = application {
 	var isMainScreenShow by remember { mutableStateOf(true) }
 
 	if (isMainScreenShow) {
-		TabScreen(
-			onShowCheckerClick = {
-				isMainScreenShow = false
-			}
-		)
+		TalpaTheme{
+			TabScreen(
+				onShowCheckerClick = {
+					isMainScreenShow = false
+				}
+			)
+		}
 	} else {
 		CheckerScreen()
 	}
