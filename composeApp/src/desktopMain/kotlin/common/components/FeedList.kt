@@ -14,9 +14,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.onClick
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -73,7 +73,7 @@ private fun FeedItemView(
 					modifier = Modifier
 						.padding(top = 8.dp),
 					text = feedItem.title,
-					style = MaterialTheme.typography.h6,
+					style = MaterialTheme.typography.headlineMedium,
 				)
 
 				feedItem.subtitle?.let { subtitle ->
@@ -83,7 +83,7 @@ private fun FeedItemView(
 						text = subtitle,
 						maxLines = 3,
 						overflow = TextOverflow.Ellipsis,
-						style = MaterialTheme.typography.body2,
+						style = MaterialTheme.typography.bodyMedium,
 					)
 				}
 			}
@@ -105,14 +105,14 @@ private fun FeedItemView(
 			modifier = Modifier
 				.padding(top = 8.dp),
 			text = feedItem.date.toString(),
-			style = MaterialTheme.typography.body2
+			style = MaterialTheme.typography.bodyMedium
 		)
 
-		Divider(
+		HorizontalDivider(
 			modifier = Modifier
 				.padding(top = 16.dp),
 			thickness = 0.2.dp,
-			color = Color.Gray,
+			color = Color.Gray
 		)
 	}
 }

@@ -21,7 +21,7 @@ import java.nio.file.Paths
 
 class MainViewModel {
 
-	private val url = "https://simplaza.org/feed/"
+	private val url = "https://flightsim.to/rss"
 	private val feedRepository = DI.feedRepository
 	private val configFilePath =
 		Paths.get(getLocalAppDataPath(), MSFS_PACKAGE_PATH, CONFIG_FILE_NAME).toString()
