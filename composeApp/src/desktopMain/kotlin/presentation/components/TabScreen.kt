@@ -2,7 +2,10 @@ package presentation.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
@@ -27,6 +30,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.Window
 import presentation.MainViewModel
@@ -47,7 +51,7 @@ fun ApplicationScope.TabScreen(onShowCheckerClick: () -> Unit) {
 
 		val selectedItem = mutableStateOf(0)
 		val items = listOf("New", "Installed", "Settings")
-		val icons = listOf(Icons.Filled.Home, Icons.Filled.Search, Icons.Filled.Settings)
+		val icons = listOf(Icons.Filled.Search, Icons.Filled.Home, Icons.Filled.Settings)
 
 		when (windowSizeClass.widthSizeClass) {
 			WindowWidthSizeClass.Compact -> {
@@ -108,18 +112,24 @@ fun MediumScreen(
 	viewModel: MainViewModel
 ) {
 	Row {
-		NavigationRail {
-			items.forEachIndexed { index, item ->
-				NavigationRailItem(
-					icon = { Icon(icons[index], contentDescription = item) },
-					label = { Text(item) },
-					selected = selectedItem.value == index,
-					onClick = {
-						selectedItem.value = index
-					}
-				)
+		NavigationRail(
+			modifier = Modifier.fillMaxHeight(),
+			header = {
+				Spacer(Modifier.height(48.dp))
+			},
+			content = {
+				items.forEachIndexed { index, item ->
+					NavigationRailItem(
+						icon = { Icon(icons[index], contentDescription = item) },
+						label = { Text(item) },
+						selected = selectedItem.value == index,
+						onClick = {
+							selectedItem.value = index
+						}
+					)
+				}
 			}
-		}
+		)
 		Box(modifier = Modifier.fillMaxSize()) {
 			when (selectedItem.value) {
 				0 -> NewAddonsScreen(viewModel)
